@@ -1,8 +1,6 @@
 package br.com.alura.client;
 
-import br.com.alura.domain.Pet;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,7 +10,9 @@ import java.net.http.HttpResponse;
 
 public class ClienHttpRequest {
 
-    public HttpResponse<String> getHttp(String uri, HttpClient client) throws IOException, InterruptedException {
+    private HttpClient client = HttpClient.newHttpClient();
+
+    public HttpResponse<String> getHttp(String uri) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -20,13 +20,13 @@ public class ClienHttpRequest {
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public HttpResponse<String> postHttp(String uri, HttpClient client , Object object) throws IOException, InterruptedException {
+    public HttpResponse<String> postHttp(String uri, Object abrigo) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Content-Type", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(new Gson().toJson(object).toString()))
+                .method("POST", HttpRequest.BodyPublishers.ofString(new Gson().toJson(abrigo).toString()))
                 .build();
-
+        System.out.println(abrigo);
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 

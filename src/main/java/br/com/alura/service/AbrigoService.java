@@ -2,16 +2,14 @@ package br.com.alura.service;
 
 import br.com.alura.client.ClienHttpRequest;
 import br.com.alura.domain.Abrigo;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class AbrigoService {
@@ -23,16 +21,14 @@ public class AbrigoService {
     }
 
     public void ListarAbrigosCadastrados() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = request.getHttp(uri,client);
+        HttpResponse<String> response = request.getHttp(uri);
         String responseBody = response.body();
-        JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
+        List<Abrigo> abrigos = Arrays.stream(new ObjectMapper().readValue(responseBody,Abrigo[].class)).toList();
         System.out.println("Abrigos cadastrados:");
-        for (JsonElement element : jsonArray) {
-            JsonObject jsonObject = element.getAsJsonObject();
-            long id = jsonObject.get("id").getAsLong();
-            String nome = jsonObject.get("nome").getAsString();
+        for (Abrigo abrigo : abrigos) {
+            long id = abrigo.getId();
+            String nome = abrigo.getNome();
             System.out.println(id +" - " +nome);
         }
     }
@@ -47,9 +43,8 @@ public class AbrigoService {
 
         Abrigo abrigo = new Abrigo(nome,telefone,email);
 
-        HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = request.postHttp(uri,client,abrigo);
+        HttpResponse<String> response = request.postHttp(uri,abrigo);
 
         int statusCode = response.statusCode();
         String responseBody = response.body();
