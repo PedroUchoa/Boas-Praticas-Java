@@ -9,9 +9,6 @@ import java.util.Scanner;
 public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
-        ClienHttpRequest request = new ClienHttpRequest();
-        PetService petService = new PetService(request);
-        AbrigoService abrigoService = new AbrigoService(request);
         CommandExecutor executor = new CommandExecutor();
 
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
@@ -28,19 +25,13 @@ public class AdopetConsoleApplication {
                 String textoDigitado = new Scanner(System.in).nextLine();
                 opcaoEscolhida = Integer.parseInt(textoDigitado);
 
-                if (opcaoEscolhida == 1) {
-                 executor.CommandExecutor(new ListarAbrigosCommand());
-                } else if (opcaoEscolhida == 2) {
-                    executor.CommandExecutor(new CadastrarNovoAbrigoCommand());
-                } else if (opcaoEscolhida == 3) {
-                    executor.CommandExecutor(new ListarPetsDoAbrigoCommand());
-                } else if (opcaoEscolhida == 4) {
-                    executor.CommandExecutor(new ImportarPetsDoAbrigoCommand());
-                } else if (opcaoEscolhida == 5) {
-                    break;
-                } else {
-                    System.out.println("NÚMERO INVÁLIDO!");
-                    opcaoEscolhida = 0;
+                switch (opcaoEscolhida){
+                    case 1 -> executor.CommandExecutor(new ListarAbrigosCommand());
+                    case 2 -> executor.CommandExecutor(new CadastrarNovoAbrigoCommand());
+                    case 3 -> executor.CommandExecutor(new ListarPetsDoAbrigoCommand());
+                    case 4 -> executor.CommandExecutor(new ImportarPetsDoAbrigoCommand());
+                    case 5 -> System.exit(0);
+                    default -> opcaoEscolhida=0;
                 }
             }
             System.out.println("Finalizando o programa...");
