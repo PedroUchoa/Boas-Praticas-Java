@@ -12,6 +12,7 @@ public class AdopetConsoleApplication {
         ClienHttpRequest request = new ClienHttpRequest();
         PetService petService = new PetService(request);
         AbrigoService abrigoService = new AbrigoService(request);
+        CommandExecutor executor = new CommandExecutor();
 
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
@@ -28,13 +29,13 @@ public class AdopetConsoleApplication {
                 opcaoEscolhida = Integer.parseInt(textoDigitado);
 
                 if (opcaoEscolhida == 1) {
-                 abrigoService.ListarAbrigosCadastrados();
+                 executor.CommandExecutor(new ListarAbrigosCommand());
                 } else if (opcaoEscolhida == 2) {
-                 abrigoService.CadastrarNovoAbrigo();
+                    executor.CommandExecutor(new CadastrarNovoAbrigoCommand());
                 } else if (opcaoEscolhida == 3) {
-                 petService.listarPetsDoAbrigo();
+                    executor.CommandExecutor(new ListarPetsDoAbrigoCommand());
                 } else if (opcaoEscolhida == 4) {
-                 petService.importarPetsDoAbrigo();
+                    executor.CommandExecutor(new ImportarPetsDoAbrigoCommand());
                 } else if (opcaoEscolhida == 5) {
                     break;
                 } else {
